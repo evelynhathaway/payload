@@ -4,10 +4,17 @@ export const menuSlug = 'menu'
 
 export const MenuGlobal: GlobalConfig = {
   slug: menuSlug,
+  versions: {
+    drafts: true,
+  },
+  access: {
+    read: () => true,
+  },
   fields: [
     {
-      name: 'globalText',
-      type: 'text',
+      name: 'relationship',
+      type: 'relationship',
+      relationTo: 'posts',
     },
   ],
 }
