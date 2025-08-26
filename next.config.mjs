@@ -24,6 +24,8 @@ const config = withBundleAnalyzer(
         fullySpecified: true,
         serverActions: {
           bodySizeLimit: '5mb',
+          // Allows Next.js server actions when using a GitHub Codespace
+          allowedOrigins: ['localhost:3000'],
         },
       },
       env: {

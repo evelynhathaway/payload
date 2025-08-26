@@ -1,7 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
-
 export const postsSlug = 'posts'
 
 export const PostsCollection: CollectionConfig = {
@@ -15,11 +13,16 @@ export const PostsCollection: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'content',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [...defaultFeatures],
-      }),
+      name: 'contentBlocksA',
+      type: 'blocks',
+      blocks: [],
+      blockReferences: ['myBlock'],
+    },
+    {
+      name: 'contentBlocksB',
+      type: 'blocks',
+      blocks: [],
+      blockReferences: ['myBlock'],
     },
   ],
 }

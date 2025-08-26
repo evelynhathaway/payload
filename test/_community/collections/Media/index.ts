@@ -8,7 +8,14 @@ export const MediaCollection: CollectionConfig = {
     create: () => true,
     read: () => true,
   },
-  fields: [],
+  fields: [
+    {
+      name: 'contentBlocks',
+      type: 'blocks',
+      blocks: [],
+      blockReferences: ['myBlock'],
+    },
+  ],
   upload: {
     crop: true,
     focalPoint: true,

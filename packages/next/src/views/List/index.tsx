@@ -2,6 +2,7 @@ import { DefaultListView, HydrateAuthProvider, ListQueryProvider } from '@payloa
 import { RenderServerComponent } from '@payloadcms/ui/elements/RenderServerComponent'
 import { renderFilters, renderTable, upsertPreferences } from '@payloadcms/ui/rsc'
 import { notFound } from 'next/navigation.js'
+import util from 'node:util'
 import {
   type AdminViewServerProps,
   type CollectionPreferences,
@@ -226,6 +227,7 @@ export const renderListView = async (
           where: whereWithMergedSearch,
         }))
       } else {
+        console.log(util.inspect(whereWithMergedSearch, true, Infinity))
         data = await req.payload.find({
           collection: collectionSlug,
           depth: 0,
