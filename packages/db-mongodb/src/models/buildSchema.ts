@@ -238,6 +238,47 @@ const array: FieldSchemaGenerator<ArrayField> = (
   })
 }
 
+const blockSchemaTemplateCache = new WeakMap<object, Map<string, Schema>>()
+
+const getBlockSchemaTemplate = (
+  block: BlocksField['blocks'][number] & object,
+  payload: Payload,
+  buildSchemaOptions: BuildSchemaOptions,
+  blockIsLocalized: boolean,
+): Schema => {
+  let byOptions = blockSchemaTemplateCache.get(block)
+  if (!byOptions) {
+    byOptions = new Map()
+    blockSchemaTemplateCache.set(block, byOptions)
+  }
+
+  const cacheKey = `${buildSchemaOptions.draftsEnabled ? 1 : 0}|${
+    buildSchemaOptions.disableUnique ? 1 : 0
+  }|${buildSchemaOptions.indexSortableFields ? 1 : 0}|${blockIsLocalized ? 1 : 0}`
+
+  const cached = byOptions.get(cacheKey)
+  if (cached) {
+    return cached
+  }
+
+  const blockSchema = new mongoose.Schema({}, { _id: false, id: false })
+
+  block.fields.forEach((blockField) => {
+    if (fieldIsVirtual(blockField)) {
+      return
+    }
+
+    const addFieldSchema = getSchemaGenerator(blockField.type)
+
+    if (addFieldSchema) {
+      addFieldSchema(blockField, blockSchema, payload, buildSchemaOptions, blockIsLocalized)
+    }
+  })
+
+  byOptions.set(cacheKey, blockSchema)
+  return blockSchema
+}
+
 const blocks: FieldSchemaGenerator<BlocksField> = (
   field: BlocksField,
   schema,
@@ -259,31 +300,14 @@ const blocks: FieldSchemaGenerator<BlocksField> = (
     ),
   })
   field.blocks.forEach((blockItem) => {
-    const blockSchema = new mongoose.Schema({}, { _id: false, id: false })
-
     const block = typeof blockItem === 'string' ? payload.blocks[blockItem] : blockItem
 
     if (!block) {
       return
     }
 
-    block.fields.forEach((blockField) => {
-      if (fieldIsVirtual(blockField)) {
-        return
-      }
-
-      const addFieldSchema = getSchemaGenerator(blockField.type)
-
-      if (addFieldSchema) {
-        addFieldSchema(
-          blockField,
-          blockSchema,
-          payload,
-          buildSchemaOptions,
-          (parentIsLocalized || field.localized) ?? false,
-        )
-      }
-    })
+    const blockIsLocalized = (parentIsLocalized || field.localized) ?? false
+    const blockSchema = getBlockSchemaTemplate(block, payload, buildSchemaOptions, blockIsLocalized)
 
     if (fieldShouldBeLocalized({ field, parentIsLocalized }) && payload.config.localization) {
       payload.config.localization.localeCodes.forEach((localeCode) => {
