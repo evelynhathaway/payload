@@ -62,31 +62,93 @@ export type SupportedTimezones =
   | 'Pacific/Fiji';
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LexicalNodes_C0124FAC".
+ * via the `definition` "LexicalNodes_8F24BCFE".
  */
-export type LexicalNodes_C0124FAC =
+export type LexicalNodes_8F24BCFE =
   | SerializedTextNode
   | SerializedTabNode
   | SerializedLineBreakNode
-  | SerializedParagraphNode<LexicalNodes_C0124FAC>
+  | SerializedParagraphNode<LexicalNodes_8F24BCFE>
   | SerializedHorizontalRuleNode
   | SerializedUploadNode<'media'>
-  | SerializedQuoteNode<LexicalNodes_C0124FAC>
+  | SerializedQuoteNode<LexicalNodes_8F24BCFE>
   | SerializedRelationshipNode<
-      'posts' | 'payload-kv' | 'users' | 'payload-locked-documents' | 'payload-preferences' | 'payload-migrations'
+      | 'pages'
+      | 'sections'
+      | 'landingPages'
+      | 'marketingPages'
+      | 'campaigns'
+      | 'guides'
+      | 'posts'
+      | 'payload-kv'
+      | 'users'
+      | 'payload-locked-documents'
+      | 'payload-preferences'
+      | 'payload-migrations'
     >
-  | SerializedAutoLinkNode<LexicalNodes_C0124FAC, LexicalLinkFields>
-  | SerializedLinkNode<LexicalNodes_C0124FAC, LexicalLinkFields>
-  | SerializedListNode<LexicalNodes_C0124FAC>
-  | SerializedListItemNode<LexicalNodes_C0124FAC>
-  | SerializedHeadingNode<LexicalNodes_C0124FAC>;
+  | SerializedAutoLinkNode<LexicalNodes_8F24BCFE, LexicalLinkFields>
+  | SerializedLinkNode<LexicalNodes_8F24BCFE, LexicalLinkFields>
+  | SerializedListNode<LexicalNodes_8F24BCFE>
+  | SerializedListItemNode<LexicalNodes_8F24BCFE>
+  | SerializedHeadingNode<LexicalNodes_8F24BCFE>;
 
 export interface Config {
   auth: {
     users: UserAuthOperations;
   };
-  blocks: {};
+  blocks: {
+    container: Container;
+    spacingContainer: SpacingContainer;
+    panel: Panel;
+    hero: Hero;
+    banner: Banner;
+    timeline: Timeline;
+    timelineItem: TimelineItem;
+    tabs: Tabs;
+    tabItem: TabItem;
+    carousel: Carousel;
+    slide: Slide;
+    cardGrid: CardGrid;
+    card: Card;
+    dualCard: DualCard;
+    grid: Grid;
+    featureGrid: FeatureGrid;
+    feature: Feature;
+    splitText: SplitText;
+    accordion: Accordion;
+    accordionItem: AccordionItem;
+    disclosureList: DisclosureList;
+    definitionList: DefinitionList;
+    metricList: MetricList;
+    metricGroup: MetricGroup;
+    specList: SpecList;
+    spec: Spec;
+    comparison: Comparison;
+    comparisonColumn: ComparisonColumn;
+    heading: Heading;
+    tagline: Tagline;
+    displayText: DisplayText;
+    kicker: Kicker;
+    richText: RichText;
+    quote: Quote;
+    image: Image;
+    embed: Embed;
+    video: Video;
+    button: Button;
+    divider: Divider;
+    badge: Badge;
+    icon: Icon;
+    date: Date;
+    metric: Metric;
+    comparisonCell: ComparisonCell;
+  };
   collections: {
+    pages: Page;
+    sections: Section;
+    landingPages: LandingPage;
+    marketingPages: MarketingPage;
+    campaigns: Campaign;
+    guides: Guide;
     posts: Post;
     media: Media;
     'payload-kv': PayloadKv;
@@ -97,6 +159,12 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    pages: PagesSelect<false> | PagesSelect<true>;
+    sections: SectionsSelect<false> | SectionsSelect<true>;
+    landingPages: LandingPagesSelect<false> | LandingPagesSelect<true>;
+    marketingPages: MarketingPagesSelect<false> | MarketingPagesSelect<true>;
+    campaigns: CampaignsSelect<false> | CampaignsSelect<true>;
+    guides: GuidesSelect<false> | GuidesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -118,6 +186,8 @@ export interface Config {
   locale: null;
   widgets: {
     collections: CollectionsWidget;
+    'collection-query': CollectionQueryWidget;
+    activity: ActivityWidget;
   };
   user: User;
   jobs: {
@@ -145,12 +215,851 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Container".
+ */
+export interface Container {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?:
+    | (
+        | Heading
+        | Tagline
+        | RichText
+        | Quote
+        | Image
+        | Embed
+        | Video
+        | Button
+        | CardGrid
+        | FeatureGrid
+        | Card
+        | DualCard
+        | Grid
+        | SplitText
+        | Accordion
+        | DisclosureList
+        | MetricList
+        | SpecList
+        | Comparison
+        | SpacingContainer
+        | Panel
+        | Divider
+      )[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'container';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Heading".
+ */
+export interface Heading {
+  level?: ('h1' | 'h2' | 'h3' | 'h4') | null;
+  children?: (DisplayText | Kicker | Image)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heading';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DisplayText".
+ */
+export interface DisplayText {
+  text?: string | null;
+  size?: ('sm' | 'md' | 'lg' | 'xl') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'displayText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Kicker".
+ */
+export interface Kicker {
+  text?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'kicker';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Image".
+ */
+export interface Image {
+  src?: string | null;
+  alt?: string | null;
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'image';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Tagline".
+ */
+export interface Tagline {
+  children?: (DisplayText | Kicker)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tagline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichText".
+ */
+export interface RichText {
+  body?: LexicalRichText<LexicalNodes_8F24BCFE> | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Quote".
+ */
+export interface Quote {
+  text?: string | null;
+  attribution?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'quote';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Embed".
+ */
+export interface Embed {
+  url?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'embed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Video".
+ */
+export interface Video {
+  url?: string | null;
+  poster?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'video';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Button".
+ */
+export interface Button {
+  label?: string | null;
+  href?: string | null;
+  variant?: ('primary' | 'secondary' | 'ghost') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'button';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CardGrid".
+ */
+export interface CardGrid {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?: (Card | DualCard)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cardGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Card".
+ */
+export interface Card {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?: (Heading | Image | Embed | Video | RichText | Date | Button)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'card';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Date".
+ */
+export interface Date {
+  value?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'date';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DualCard".
+ */
+export interface DualCard {
+  children?: (Heading | Image | Embed | Video | Button)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'dualCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGrid".
+ */
+export interface FeatureGrid {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?: Feature[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Feature".
+ */
+export interface Feature {
+  children?: (Heading | Icon | Button)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'feature';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Icon".
+ */
+export interface Icon {
+  name?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'icon';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Grid".
+ */
+export interface Grid {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?: (Image | Embed | Video | Card)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'grid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SplitText".
+ */
+export interface SplitText {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?: (Heading | Tagline | RichText | Quote | Button | Divider)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'splitText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Divider".
+ */
+export interface Divider {
+  style?: ('solid' | 'dashed' | 'dotted') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'divider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Accordion".
+ */
+export interface Accordion {
+  children?: (Heading | RichText | AccordionItem)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionItem".
+ */
+export interface AccordionItem {
+  children?: (RichText | Heading | Image | Button)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordionItem';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DisclosureList".
+ */
+export interface DisclosureList {
+  children?: DefinitionList[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'disclosureList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DefinitionList".
+ */
+export interface DefinitionList {
+  children?: (RichText | Heading)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'definitionList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MetricList".
+ */
+export interface MetricList {
+  children?: MetricGroup[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'metricList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MetricGroup".
+ */
+export interface MetricGroup {
+  children?: Metric[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'metricGroup';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Metric".
+ */
+export interface Metric {
+  value?: string | null;
+  label?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'metric';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpecList".
+ */
+export interface SpecList {
+  children?: Spec[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'specList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Spec".
+ */
+export interface Spec {
+  children?: DisplayText[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'spec';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Comparison".
+ */
+export interface Comparison {
+  children?: ComparisonColumn[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'comparison';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonColumn".
+ */
+export interface ComparisonColumn {
+  children?: ComparisonCell[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'comparisonColumn';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonCell".
+ */
+export interface ComparisonCell {
+  value?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'comparisonCell';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpacingContainer".
+ */
+export interface SpacingContainer {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?:
+    | (
+        | Heading
+        | Tagline
+        | RichText
+        | Quote
+        | Image
+        | Embed
+        | Video
+        | Button
+        | CardGrid
+        | FeatureGrid
+        | Card
+        | DualCard
+        | Grid
+        | SplitText
+        | Accordion
+        | DisclosureList
+        | MetricList
+        | SpecList
+        | Comparison
+        | Panel
+        | Divider
+      )[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'spacingContainer';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Panel".
+ */
+export interface Panel {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?:
+    | (
+        | Heading
+        | Tagline
+        | RichText
+        | Quote
+        | Image
+        | Embed
+        | Video
+        | Button
+        | CardGrid
+        | FeatureGrid
+        | Card
+        | DualCard
+        | Grid
+        | SplitText
+        | Accordion
+        | DisclosureList
+        | MetricList
+        | SpecList
+        | Comparison
+        | Divider
+      )[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'panel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Hero".
+ */
+export interface Hero {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?:
+    | (
+        | Heading
+        | Tagline
+        | RichText
+        | Quote
+        | Image
+        | Embed
+        | Video
+        | Button
+        | CardGrid
+        | FeatureGrid
+        | Card
+        | Grid
+        | SplitText
+        | Accordion
+        | DisclosureList
+        | MetricList
+        | SpecList
+        | SpacingContainer
+        | Divider
+      )[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Banner".
+ */
+export interface Banner {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?:
+    | (
+        | Heading
+        | Tagline
+        | RichText
+        | Quote
+        | Image
+        | Embed
+        | Video
+        | Button
+        | CardGrid
+        | FeatureGrid
+        | Card
+        | Grid
+        | SplitText
+        | SpacingContainer
+        | Divider
+      )[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Timeline".
+ */
+export interface Timeline {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?:
+    | (Heading | RichText | Button | Image | Embed | Video | TimelineItem | Container | Hero | Banner | Carousel)[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineItem".
+ */
+export interface TimelineItem {
+  children?: (Heading | RichText | Image | Button | Badge)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timelineItem';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Badge".
+ */
+export interface Badge {
+  text?: string | null;
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'badge';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Carousel".
+ */
+export interface Carousel {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?: Slide[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'carousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Slide".
+ */
+export interface Slide {
+  children?: (Heading | RichText | Image | Button | Badge)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'slide';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Tabs".
+ */
+export interface Tabs {
+  spacing?: {
+    paddingTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginTop?: ('none' | 'small' | 'medium' | 'large') | null;
+    marginBottom?: ('none' | 'small' | 'medium' | 'large') | null;
+  };
+  color?: {
+    background?: string | null;
+    foreground?: string | null;
+    accent?: string | null;
+  };
+  alignment?: {
+    horizontal?: ('left' | 'center' | 'right') | null;
+    vertical?: ('top' | 'middle' | 'bottom') | null;
+  };
+  children?: (Container | Hero | Banner | Timeline | Carousel | Heading | TabItem)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tabs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TabItem".
+ */
+export interface TabItem {
+  children?: (Container | Card | RichText | Heading | Image | Button | Accordion)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tabItem';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  title?: string | null;
+  layout?: (Container | Hero | Banner | Timeline | Tabs | Carousel)[] | null;
+  layout2?: (Container | Hero | Banner | Timeline | Tabs | Carousel)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sections".
+ */
+export interface Section {
+  id: string;
+  title?: string | null;
+  layout?: (Container | Hero | Banner | Timeline | Tabs | Carousel)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "landingPages".
+ */
+export interface LandingPage {
+  id: string;
+  title?: string | null;
+  layout?: (Container | Hero | Banner | Timeline | Tabs | Carousel)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "marketingPages".
+ */
+export interface MarketingPage {
+  id: string;
+  title?: string | null;
+  layout?: (Container | Hero | Banner | Timeline | Tabs | Carousel)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campaigns".
+ */
+export interface Campaign {
+  id: string;
+  title?: string | null;
+  layout?: (Container | Hero | Banner | Timeline | Tabs | Carousel)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "guides".
+ */
+export interface Guide {
+  id: string;
+  title?: string | null;
+  layout?: (Container | Hero | Banner | Timeline | Tabs | Carousel)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
   id: string;
   title?: string | null;
-  content?: LexicalRichText<LexicalNodes_C0124FAC> | null;
+  content?: LexicalRichText<LexicalNodes_8F24BCFE> | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -248,6 +1157,30 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
+        relationTo: 'pages';
+        value: string | Page;
+      } | null)
+    | ({
+        relationTo: 'sections';
+        value: string | Section;
+      } | null)
+    | ({
+        relationTo: 'landingPages';
+        value: string | LandingPage;
+      } | null)
+    | ({
+        relationTo: 'marketingPages';
+        value: string | MarketingPage;
+      } | null)
+    | ({
+        relationTo: 'campaigns';
+        value: string | Campaign;
+      } | null)
+    | ({
+        relationTo: 'guides';
+        value: string | Guide;
+      } | null)
+    | ({
         relationTo: 'posts';
         value: string | Post;
       } | null)
@@ -300,6 +1233,73 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  layout?: T | {};
+  layout2?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sections_select".
+ */
+export interface SectionsSelect<T extends boolean = true> {
+  title?: T;
+  layout?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "landingPages_select".
+ */
+export interface LandingPagesSelect<T extends boolean = true> {
+  title?: T;
+  layout?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "marketingPages_select".
+ */
+export interface MarketingPagesSelect<T extends boolean = true> {
+  title?: T;
+  layout?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "campaigns_select".
+ */
+export interface CampaignsSelect<T extends boolean = true> {
+  title?: T;
+  layout?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "guides_select".
+ */
+export interface GuidesSelect<T extends boolean = true> {
+  title?: T;
+  layout?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -453,6 +1453,60 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collection-query_widget".
+ */
+export interface CollectionQueryWidget {
+  data?: {
+    title?: string | null;
+    relatedCollection:
+      | 'pages'
+      | 'sections'
+      | 'landingPages'
+      | 'marketingPages'
+      | 'campaigns'
+      | 'guides'
+      | 'posts'
+      | 'media'
+      | 'users';
+    where?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    sortField?: string | null;
+    sortDirection?: ('asc' | 'desc') | null;
+    limit?: number | null;
+  };
+  width: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activity_widget".
+ */
+export interface ActivityWidget {
+  data?: {
+    excludedCollections?:
+      | (
+          | 'pages'
+          | 'sections'
+          | 'landingPages'
+          | 'marketingPages'
+          | 'campaigns'
+          | 'guides'
+          | 'posts'
+          | 'media'
+          | 'users'
+        )[]
+      | null;
+  };
+  width: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
